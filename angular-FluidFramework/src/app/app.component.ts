@@ -8,6 +8,7 @@ import { SharedMap } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from "rxjs";
+import { EmployeeService } from "./Service/employee.service";
 
 
 
@@ -21,13 +22,14 @@ export class AppComponent implements OnInit, OnDestroy {
 	sharedMap: SharedMap | undefined;
 	empData: any;
 	container: any;
+	empDataList: any;
 	getEmpUpdate: (() => void) | undefined;
-	constructor(){
+	constructor(private empService: EmployeeService ){
 
 	}
 
 	async ngOnInit() {
-		//this.empData = this.getEmpData();
+		var info = this.getEmpData();
 		this.sharedMap = await this.getFluidData();
 		this.syncData();
 	}
@@ -82,7 +84,16 @@ export class AppComponent implements OnInit, OnDestroy {
 		//this.sharedMap!.off("valueChanged", this.getEmpUpdate);
 	}
 
-	// getEmpData(): Observable<any> {
-    //     return this._httpc.get();
-    // }
+	getEmpData() {
+		this.empService.getEmployees()
+		.subscribe((data) => {
+			console.log(data);
+			this.empDataList = data;
+			// if(data != null)
+			// {
+			// 	this.empDataList = data;
+			// }
+		});
+		return this.empDataList;
+    }
 }
