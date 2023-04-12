@@ -8,6 +8,7 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppComponent } from "./app.component";
 import {HttpClientModule } from "@angular/common/http";
+import { EmployeeService } from "./Service/employee.service";
 
 @NgModule({
 	declarations: [AppComponent],
