@@ -6,68 +6,83 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SharedMap } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {BehaviorSubject, Observable} from "rxjs";
 
-interface TimestampDataModel {
-	time: string | undefined;
-}
+
 
 @Component({
 	selector: "app-root",
 	templateUrl: "./app.component.html",
 	styleUrls: ["./app.component.css"],
 })
+
 export class AppComponent implements OnInit, OnDestroy {
-	sharedTimestamp: SharedMap | undefined;
-	localTimestamp: TimestampDataModel | undefined;
-	updateLocalTimestamp: (() => void) | undefined;
+	sharedMap: SharedMap | undefined;
+	empData: any;
+	container: any;
+	getEmpUpdate: (() => void) | undefined;
+	constructor(){
+
+	}
 
 	async ngOnInit() {
-		this.sharedTimestamp = await this.getFluidData();
+		//this.empData = this.getEmpData();
+		this.sharedMap = await this.getFluidData();
 		this.syncData();
 	}
 
-	async getFluidData() {
-		// TODO 1: Configure the container.
+	async getFluidData(){
 		const client = new TinyliciousClient();
+		console.log(client);
 		const containerSchema = {
-			initialObjects: { sharedTimestamp: SharedMap },
+			initialObjects: { empMap: SharedMap },
 		};
 
-		// TODO 2: Get the container from the Fluid service.
-		let container;
+		let result;
 		const containerId = location.hash.substring(1);
 		if (!containerId) {
-			({ container } = await client.createContainer(containerSchema));
-			const id = await container.attach();
+			result = await client.createContainer(containerSchema);
+			this.container = result.container;
+			const id = await this.container.attach();
+			console.log(id);
 			location.hash = id;
 		} else {
-			({ container } = await client.getContainer(containerId, containerSchema));
+			result = await client.getContainer(containerId, containerSchema);
+			this.container = result.container;
 		}
 
 		// TODO 3: Return the Fluid timestamp object.
-		return container.initialObjects.sharedTimestamp as SharedMap;
+		return this.container.initialObjects.empMap as SharedMap;
 	}
 
 	syncData() {
 		// Only sync if the Fluid SharedMap object is defined.
-		if (this.sharedTimestamp) {
-			// TODO 4: Set the value of the localTimestamp state object that will appear in the UI.
-			this.updateLocalTimestamp = () => {
-				this.localTimestamp = { time: this.sharedTimestamp!.get("time") };
-			};
-			this.updateLocalTimestamp();
+		if (this.sharedMap) {
+			this.sharedMap?.set("emp", "michael");
+			
+			this.getEmpUpdate = () => {
+				this.empData = this.sharedMap?.get("emp");
+			}
+			this.getEmpUpdate();
 
 			// TODO 5: Register handlers.
-			this.sharedTimestamp!.on("valueChanged", this.updateLocalTimestamp!);
+			this.sharedMap!.on("valueChanged", this.getEmpUpdate);
 		}
 	}
 
-	onButtonClick() {
-		this.sharedTimestamp?.set("time", Date.now().toString());
+	async onButtonClick() {
+		//this.sharedMap = this.container.initialObjects.empMap as SharedMap;
+		//this.sharedMap = await this.getFluidData();
+		this.sharedMap?.set("emp", "Jackson");
+		console.log(this.empData);
 	}
 
-	ngOnDestroy() {
-		// Delete handler registration when the Angular App component is dismounted.
-		this.sharedTimestamp!.off("valueChanged", this.updateLocalTimestamp!);
+	ngOnDestroy(){
+		//this.sharedMap!.off("valueChanged", this.getEmpUpdate);
 	}
+
+	// getEmpData(): Observable<any> {
+    //     return this._httpc.get();
+    // }
 }
