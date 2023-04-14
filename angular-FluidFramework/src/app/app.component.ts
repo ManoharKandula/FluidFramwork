@@ -9,6 +9,7 @@ import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable} from "rxjs";
 import { EmployeeService } from "./Service/employee.service";
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 
 
@@ -20,18 +21,24 @@ import { EmployeeService } from "./Service/employee.service";
 
 export class AppComponent implements OnInit, OnDestroy {
 	sharedMap: SharedMap | undefined;
-	empData: any;
+	sharedEmpData: any;
 	container: any;
 	empDataList: any;
-	getEmpUpdate: (() => void) | undefined;
-	constructor(private empService: EmployeeService ){
 
+	empForm: FormGroup;
+	getEmpUpdate: (() => void) | undefined;
+	constructor(private empService: EmployeeService, private _fb: FormBuilder, ){
+		this.getEmpData();
+		this.empForm = new FormGroup({
+			name: new FormControl(null, Validators.required),
+			salary: new FormControl(null, Validators.required)
+		})
 	}
 
 	async ngOnInit() {
-		var info = this.getEmpData();
 		this.sharedMap = await this.getFluidData();
 		this.syncData();
+		
 	}
 
 	async getFluidData(){
@@ -61,10 +68,10 @@ export class AppComponent implements OnInit, OnDestroy {
 	syncData() {
 		// Only sync if the Fluid SharedMap object is defined.
 		if (this.sharedMap) {
-			this.sharedMap?.set("emp", "michael");
+			this.sharedMap?.set("EmpTable", this.empDataList);
 			
 			this.getEmpUpdate = () => {
-				this.empData = this.sharedMap?.get("emp");
+				this.sharedEmpData = this.sharedMap?.get("EmpTable");
 			}
 			this.getEmpUpdate();
 
@@ -77,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		//this.sharedMap = this.container.initialObjects.empMap as SharedMap;
 		//this.sharedMap = await this.getFluidData();
 		this.sharedMap?.set("emp", "Jackson");
-		console.log(this.empData);
+		console.log(this.sharedEmpData);
 	}
 
 	ngOnDestroy(){
@@ -89,11 +96,40 @@ export class AppComponent implements OnInit, OnDestroy {
 		.subscribe((data) => {
 			console.log(data);
 			this.empDataList = data;
-			// if(data != null)
-			// {
-			// 	this.empDataList = data;
-			// }
 		});
-		return this.empDataList;
     }
+
+	deleteEmp(id: number) {
+		for (let i = 0; i < this.sharedEmpData.length; i++) {
+			if (this.sharedEmpData[i].id === id) {
+				this.sharedEmpData.splice(i, 1);
+				this.sharedMap?.set("EmpTable", this.sharedEmpData);
+				this.empService.deleteEmployee(id).subscribe();
+				break;
+			}
+		}
+	}
+
+	insertEmployee(){
+		console.log(this.empForm.value);
+		this.empService.insertEmployee(this.empForm.value).subscribe((data) => {
+			console.log(data);
+			this.sharedEmpData.push(data);
+			this.sharedMap?.set("EmpTable", this.sharedEmpData);
+		});
+		//this.sharedEmpData.push(emp);
+		console.log(this.sharedEmpData);
+		
+	}
+
+	updateEmp(id: number) {
+		// for (let i = 0; i < this.sharedEmpData.length; i++) {
+		// 	if (this.sharedEmpData[i].id === id) {
+				
+		// 		break;
+		// 	}
+		// }
+	}
+
+
 }

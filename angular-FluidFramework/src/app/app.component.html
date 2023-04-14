@@ -1,9 +1,46 @@
-<div>app is working</div>
 <div class="app">
-	
+<!-- 	
 	<div class="emp">{{ empData }}</div>
 	<br>
 	<button class="getEmp" (click)="onButtonClick()">Get Data</button>
-	<!-- <div>{{ empData.salary }}</div> -->
+	<div>{{ empData.salary }}</div> -->
+
+	<table class="EmployeeTB">
+		<thead>
+		  <tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Salary</th>
+			<th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr *ngFor="let emp of sharedEmpData">
+			<td>{{ emp.id }}</td>
+			<td>{{ emp.name }}</td>
+			<td>{{ emp.salary }}</td>
+			<td>
+				<button (click)="deleteEmp(emp.id)"> Delete </button>
+			</td>
+		  </tr>
+		</tbody>
+	</table>
+
+	<div>
+		<form [formGroup]="empForm" (ngSubmit)="insertEmployee()">
+			<label>
+			  Name:
+			  <input type="text"  name="name" formControlName="name">
+			</label>
+		  
+			<label>
+			  Salary:
+			  <input type="number" name="salary" formControlName="salary">
+			</label>
+		  
+			<input type="submit" value="Insert Employee">
+		</form>
+	</div>
+	
 </div>
 
