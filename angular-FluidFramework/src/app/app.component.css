@@ -1,21 +1,10 @@
 .app {
 	text-align: center;
 }
-.EmployeeTB {
-  border-collapse: collapse;
-  width: 100%;
+.heading{
+	text-align: center;
+	margin: 20px;
+	color: #8D8741;
 }
 
-th, td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: left;
-}
 
-th {
-  background-color: #ddd;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}

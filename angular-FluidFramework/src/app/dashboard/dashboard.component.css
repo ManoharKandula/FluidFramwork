@@ -1,0 +1,50 @@
+.heading{
+
+	text-align: center;
+	
+	margin:20px;
+	
+	color:#8D8741;
+	
+}
+.btn3{
+	
+	background-color:#8D8741;
+	
+	color:white;
+	
+}
+.table{
+	
+	margin-left:20px;
+	
+	}
+.table-responsive {
+	
+	overflow-x: auto;
+	
+	}
+	
+	.table-hover{
+	
+	min-height: 10vh;
+	
+	min-width: 60vw;
+	
+	width:50%;
+	
+	border:none;
+	
+}
+.second{
+	
+	min-width:30vw !important;
+	
+}
+.thead{
+	
+	background-color:#9DA85A;
+	
+	color:white;
+	
+}

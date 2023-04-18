@@ -1,0 +1,23 @@
+<div class="d-flex flex-row justify-content-center">
+
+    <form [formGroup]="insertForm" class="p-5 d-flex flex-column justify-content-center">
+        <div class="m-3">
+            <label for="empId">Employee Id: </label>
+            <input id="empId" type="text" formControlName="empId" class="ms-2">
+        </div>
+        <div class="m-3">
+            <label for="name">Name: </label>
+            <input id="name" type="text" formControlName="name" class="ms-5">
+        </div>
+        <div class="m-3">
+            <label for="department">Department: </label>
+            <input id="department" type="text" formControlName="department" class="ms-2">
+        </div>
+
+        <div class="m-3">
+            <label for="salary">Salary: </label>
+            <input id="salary" type="text" formControlName="salary" class="ms-5">
+        </div>
+        <button class="btn btn-primary m-auto px-5" type="submit" [disabled]="!insertForm.valid">Insert</button>
+    </form>
+</div>

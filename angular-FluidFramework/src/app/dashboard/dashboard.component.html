@@ -1,0 +1,66 @@
+<h2 style="text-align:center;margin:20px;color:#417d8d">Fluid Framework</h2>
+	<div class="d-flex flex-col align-center justify-content-center">
+		<div style="display: flex;flex-direction: column; max-width: 70%;" class="md-7">
+			<div class="table-responsive m-3">
+				<table class="table table-hover table-bordered">
+					<thead class="thead">
+					  <tr>
+						<th scope="col">Employee ID</th>
+						<th scope="col">Name</th>
+						<th scope="col">Department Id</th>
+						<th scope="col">Salary</th>
+						<th scope="col">Actions</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr *ngFor="let emp of empDataList">
+						<td scope="row">{{ emp.id }}</td>
+						<td scope="row">{{ emp.name }}</td>
+						<td scope="row">{{ emp.deptId }}</td>
+						<td scope="row">{{ emp.salary }}</td>
+						<td scope="row">
+							<button (click)="deleteEmp(emp.id)"> Delete </button>
+						</td>
+					  </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div style="display: flex;flex-direction: column; max-width: 70%;" class="md-7">
+			<div class="table-responsive m-3">
+				<table class="table table-hover table-bordered ">
+					<thead>
+					<tr>
+						<th scope="col">Department ID</th>
+						<th scope="col">Department Name</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let dept of departments">
+						<td scope="row">{{ dept.deptId }}</td>
+						<td scope="row">{{ dept.deptName }}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div>
+		<form [formGroup]="empForm" (ngSubmit)="insertEmployee()">
+			<label>
+			  Name:
+			  <input type="text"  name="name" formControlName="name">
+			</label>
+			<label>
+				Department:
+				<input type="text"  name="department" formControlName="department">
+			  </label>
+			<label>
+			  Salary:
+			  <input type="number" name="salary" formControlName="salary">
+			</label>
+			<input type="submit" value="Insert Employee">
+		</form>
+	</div> -->
