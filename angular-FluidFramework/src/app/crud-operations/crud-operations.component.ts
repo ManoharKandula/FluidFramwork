@@ -32,6 +32,7 @@ export class CrudOperationsComponent implements OnInit {
 		console.log(this.insertForm.value);
 		this.empService.insertEmployee(this.insertForm.value).subscribe((data) => {
 			console.log(data);
+      this.empService.getEmpRow(data)
       this.empDataEvent.emit(data);
 			// this.empDataList.push(data);
 			// this.sharedMap?.set("EmpTable", this.empDataList);

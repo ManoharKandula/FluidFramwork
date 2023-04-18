@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Employee } from "../Model/employee.model";
 import { Department } from "../Model/department.model";
 import { BehaviorSubject } from 'rxjs';
+import { EmployeeEntity } from "../Model/empTable.model";
 
 @Injectable({providedIn: "root"})
 export class EmployeeService{
@@ -34,7 +35,7 @@ export class EmployeeService{
     }
 
     insertEmployee(emp: any){
-        return this._httpc.post<Employee>("https://fluidframeworkdemo.azurewebsites.net/api/PostEmpDetails?", emp);
+        return this._httpc.post<EmployeeEntity>("https://fluidframeworkdemo.azurewebsites.net/api/PostEmpDetails?", emp);
     }
 
     getEmpRow(emp: any){
