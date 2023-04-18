@@ -10,16 +10,16 @@
 		  <tr>
 			<th>Employee ID</th>
 			<th>Name</th>
-			<th>Department</th>
+			<th>Department Id</th>
 			<th>Salary</th>
 			<th>Actions</th>
 		  </tr>
 		</thead>
 		<tbody>
 		  <tr *ngFor="let emp of sharedEmpData">
-			<td>{{ emp.EmployeeId }}</td>
+			<td>{{ emp.Id }}</td>
 			<td>{{ emp.name }}</td>
-			<td>getDeptName(emp.DeptId)</td>
+			<td>{{ emp.DeptId }}</td>
 			<td>{{ emp.salary }}</td>
 			<td>
 				<button (click)="deleteEmp(emp.id)"> Delete </button>

@@ -3,5 +3,4 @@ export class Employee {
     name: string | undefined;
     salary: number | undefined;
     DeptId: number | undefined;
-    EmployeeId: number | undefined;
 }

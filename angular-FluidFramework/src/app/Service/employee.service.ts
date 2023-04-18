@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Employee } from "../Model/employee.model";
+import { Department } from "../Model/department.model";
 
 @Injectable({providedIn: "root"})
 export class EmployeeService{
@@ -13,7 +14,7 @@ export class EmployeeService{
     }
 
     getDepartments(){
-        var data = this._httpc.get<Employee>("https://fluidframeworkdemo.azurewebsites.net/api/GetDepartments?");
+        var data = this._httpc.get<Department>("https://fluidframeworkdemo.azurewebsites.net/api/GetDepartments?");
         return data;
     }
 

@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	async ngOnInit() {
-		this.departments = this.empService.getDepartments();
+		this.departments = this.getDepartments();
 		this.sharedMap = await this.getFluidData();
 		this.syncData();
 		
@@ -127,8 +127,17 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	getDeptName(deptId: number){
-		this.departments.filter((dept: any) => dept.deptId == deptId).DeptName;
+		if(this.departments != null && this.departments != undefined){
+			var deptName = this.departments.filter((dept: any) => dept.deptId == deptId).DeptName;
+			return deptName;
+		}
 	}
 
-
+	getDepartments() {
+		this.empService.getDepartments()
+		.subscribe((data) => {
+			console.log(data);
+			this.departments = data;
+		});
+    }
 }
