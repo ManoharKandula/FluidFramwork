@@ -1,10 +1,6 @@
 <div class="d-flex flex-row justify-content-center">
 
-    <form [formGroup]="insertForm" class="p-5 d-flex flex-column justify-content-center">
-        <div class="m-3">
-            <label for="empId">Employee Id: </label>
-            <input id="empId" type="text" formControlName="empId" class="ms-2">
-        </div>
+    <form [formGroup]="insertForm" class="p-5 d-flex flex-column justify-content-center" (ngSubmit)="insertEmployee()">
         <div class="m-3">
             <label for="name">Name: </label>
             <input id="name" type="text" formControlName="name" class="ms-5">

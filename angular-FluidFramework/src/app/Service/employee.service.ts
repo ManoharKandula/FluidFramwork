@@ -2,10 +2,18 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Employee } from "../Model/employee.model";
 import { Department } from "../Model/department.model";
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({providedIn: "root"})
 export class EmployeeService{
-    
+    private empdatasubject = new BehaviorSubject({});
+    currentEmpData = this.empdatasubject.asObservable();
+
+    empRow:any;
+
+    // private sharedMapsubject = new BehaviorSubject({});
+    // currentSharedMap = this.sharedMapsubject.asObservable();
+
     constructor(private _httpc: HttpClient) {}
 
     getEmployees(){
@@ -28,4 +36,17 @@ export class EmployeeService{
     insertEmployee(emp: any){
         return this._httpc.post<Employee>("https://fluidframeworkdemo.azurewebsites.net/api/PostEmpDetails?", emp);
     }
+
+    getEmpRow(emp: any){
+        this.empRow = emp;
+    }
+    
+
+
+  changeEmpData(message: string) {
+    this.empdatasubject.next(message)
+  }
+//   changeSharedMap(message: string) {
+//     this.sharedMapsubject.next(message)
+//   }
 }

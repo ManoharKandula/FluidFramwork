@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import TinyliciousClient from '@fluidframework/tinylicious-client';
 import { SharedMap } from 'fluid-framework';
@@ -11,14 +11,23 @@ import { EmployeeService } from '../Service/employee.service';
 })
 export class DashboardComponent implements OnInit {
   sharedMap: SharedMap | undefined;
+  deptSharedMap: SharedMap | undefined;
 	empDataList: any;
 	container: any;
 	departments: any;
-
 	empForm: FormGroup;
 	getEmpUpdate: (() => void) | undefined;
+  getDeptUpdate: (() => void) | undefined;
+
+  // @Input() childMessage: string;
+  // @Input() childMessage: string;
+
+  // @Output() empDataEvent = new EventEmitter<any>();
+  // @Output() sharedmapEvent = new EventEmitter<any>();
+
   constructor(private empService: EmployeeService, private _fb: FormBuilder) {
     this.empDataList = this.getEmpData();
+    //this.empDataEvent.emit(this.empDataList);
 		this.empForm = new FormGroup({
 			name: new FormControl(null, Validators.required),
 			salary: new FormControl(null, Validators.required),
@@ -27,8 +36,13 @@ export class DashboardComponent implements OnInit {
   }
 
   async ngOnInit() {
-		this.departments = this.getDepartments();
-		this.sharedMap = await this.getFluidData();
+		this.getDepartments();
+    var fluidData = await this.getFluidData();
+		this.sharedMap = fluidData.empMap;
+    this.deptSharedMap = fluidData.deptData;
+    this.empService.currentEmpData.subscribe(message => this.empDataList.push(message));
+    this.sharedMap?.set("EmpTable", this.empDataList);
+    //this.sharedmapEvent.emit(this.sharedMap);
 		this.syncData();
 		
 	}
@@ -37,7 +51,7 @@ export class DashboardComponent implements OnInit {
 		const client = new TinyliciousClient();
 		console.log(client);
 		const containerSchema = {
-			initialObjects: { empMap: SharedMap },
+			initialObjects: { empMap: SharedMap, deptData: SharedMap },
 		};
 
 		let result;
@@ -54,7 +68,7 @@ export class DashboardComponent implements OnInit {
 		}
 
 		// TODO 3: Return the Fluid timestamp object.
-		return this.container.initialObjects.empMap as SharedMap;
+		return this.container.initialObjects;
 	}
 
 	syncData() {
@@ -69,6 +83,17 @@ export class DashboardComponent implements OnInit {
 
 			// TODO 5: Register handlers.
 			this.sharedMap!.on("valueChanged", this.getEmpUpdate);
+		}
+    if (this.deptSharedMap) {
+			this.deptSharedMap?.set("DeptTable", this.departments);
+			
+			this.getDeptUpdate = () => {
+				this.departments = this.deptSharedMap?.get("DeptTable");
+			}
+			this.getDeptUpdate();
+
+			// TODO 5: Register handlers.
+			this.deptSharedMap!.on("valueChanged", this.getDeptUpdate);
 		}
 	}
 
@@ -97,21 +122,11 @@ export class DashboardComponent implements OnInit {
 				this.empDataList.splice(i, 1);
 				this.sharedMap?.set("EmpTable", this.empDataList);
 				this.empService.deleteEmployee(id).subscribe();
+        this.getDepartments();
+        this.deptSharedMap?.set("DeptTable", this.departments);
 				break;
 			}
 		}
-	}
-
-	insertEmployee(){
-		console.log(this.empForm.value);
-		this.empService.insertEmployee(this.empForm.value).subscribe((data) => {
-			console.log(data);
-			this.empDataList.push(data);
-			this.sharedMap?.set("EmpTable", this.empDataList);
-		});
-		//this.empDataList.push(emp);
-		console.log(this.empDataList);
-		
 	}
 
 	getDeptName(deptId: number){
