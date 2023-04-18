@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	sharedEmpData: any;
 	container: any;
 	empDataList: any;
+	departments: any;
 
 	empForm: FormGroup;
 	getEmpUpdate: (() => void) | undefined;
@@ -31,11 +32,14 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.getEmpData();
 		this.empForm = new FormGroup({
 			name: new FormControl(null, Validators.required),
-			salary: new FormControl(null, Validators.required)
+			salary: new FormControl(null, Validators.required),
+			department: new FormControl(null, Validators.required),
+			employeeId: new FormControl(null, Validators.required)
 		})
 	}
 
 	async ngOnInit() {
+		this.departments = this.empService.getDepartments();
 		this.sharedMap = await this.getFluidData();
 		this.syncData();
 		
@@ -122,13 +126,8 @@ export class AppComponent implements OnInit, OnDestroy {
 		
 	}
 
-	updateEmp(id: number) {
-		// for (let i = 0; i < this.sharedEmpData.length; i++) {
-		// 	if (this.sharedEmpData[i].id === id) {
-				
-		// 		break;
-		// 	}
-		// }
+	getDeptName(deptId: number){
+		this.departments.filter((dept: any) => dept.deptId == deptId).DeptName;
 	}
 
 

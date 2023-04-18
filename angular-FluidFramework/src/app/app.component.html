@@ -8,16 +8,18 @@
 	<table class="EmployeeTB">
 		<thead>
 		  <tr>
-			<th>ID</th>
+			<th>Employee ID</th>
 			<th>Name</th>
+			<th>Department</th>
 			<th>Salary</th>
 			<th>Actions</th>
 		  </tr>
 		</thead>
 		<tbody>
 		  <tr *ngFor="let emp of sharedEmpData">
-			<td>{{ emp.id }}</td>
+			<td>{{ emp.EmployeeId }}</td>
 			<td>{{ emp.name }}</td>
+			<td>getDeptName(emp.DeptId)</td>
 			<td>{{ emp.salary }}</td>
 			<td>
 				<button (click)="deleteEmp(emp.id)"> Delete </button>
@@ -29,18 +31,23 @@
 	<div>
 		<form [formGroup]="empForm" (ngSubmit)="insertEmployee()">
 			<label>
+				Employee Id:
+				<input type="number" name="empId" formControlName="employeeId">
+			  </label>
+			<label>
 			  Name:
 			  <input type="text"  name="name" formControlName="name">
 			</label>
-		  
+			<label>
+				Department:
+				<input type="text"  name="department" formControlName="department">
+			  </label>
 			<label>
 			  Salary:
 			  <input type="number" name="salary" formControlName="salary">
 			</label>
-		  
 			<input type="submit" value="Insert Employee">
 		</form>
 	</div>
-	
 </div>
 
