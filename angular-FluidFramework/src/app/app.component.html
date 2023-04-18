@@ -17,13 +17,28 @@
 		</thead>
 		<tbody>
 		  <tr *ngFor="let emp of sharedEmpData">
-			<td>{{ emp.Id }}</td>
+			<td>{{ emp.id }}</td>
 			<td>{{ emp.name }}</td>
-			<td>{{ emp.DeptId }}</td>
+			<td>{{ emp.deptId }}</td>
 			<td>{{ emp.salary }}</td>
 			<td>
 				<button (click)="deleteEmp(emp.id)"> Delete </button>
 			</td>
+		  </tr>
+		</tbody>
+	</table>
+
+	<table class="DeptTB">
+		<thead>
+		  <tr>
+			<th>Department ID</th>
+			<th>Department Name</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr *ngFor="let dept of departments">
+			<td>{{ dept.deptId }}</td>
+			<td>{{ dept.deptName }}</td>
 		  </tr>
 		</tbody>
 	</table>
