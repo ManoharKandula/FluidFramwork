@@ -12,8 +12,6 @@ export class CrudOperationsComponent implements OnInit {
   empDataList:any
   sharedMap:any
 
-  @Output() empDataEvent = new EventEmitter<any>();
-
   constructor(private empService: EmployeeService) { }
 
   insertForm = new FormGroup({
@@ -29,16 +27,15 @@ export class CrudOperationsComponent implements OnInit {
   }
 
   insertEmployee(){
-		console.log(this.insertForm.value);
-		this.empService.insertEmployee(this.insertForm.value).subscribe((data) => {
-			console.log(data);
-      this.empService.getEmpRow(data)
-      this.empDataEvent.emit(data);
-			// this.empDataList.push(data);
-			// this.sharedMap?.set("EmpTable", this.empDataList);
-		});
-		//this.empDataList.push(emp);
-		console.log(this.empDataList);
-		
+	// 	console.log(this.insertForm.value);
+	// 	this.empService.insertEmployee(this.insertForm.value).subscribe((data) => {
+	// 		console.log(data);
+  //     this.empService.getEmpRow(data)
+  //     this.empDataEvent.emit(data);
+	// 		// this.empDataList.push(data);
+	// 		// this.sharedMap?.set("EmpTable", this.empDataList);
+	// 	});
+	// 	//this.empDataList.push(emp);
+	// 	console.log(this.empDataList);
 	}
 }
