@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit {
 			this.sharedMap!.on("valueChanged", this.getEmpUpdate);
 		}
     if (this.deptSharedMap) {
-      if(this.empDataList != null && this.empDataList != undefined){
+      if(this.departments != null && this.departments != undefined){
         this.deptSharedMap?.set("DeptTable", this.departments);
         console.log(this.departments);
       }
