@@ -45,9 +45,7 @@ export class DashboardComponent implements OnInit {
 	}
 
 	async getFluidData(){
-    console.log("getFluidData method");
 		const client = new TinyliciousClient();
-		console.log(client);
 		const containerSchema = {
 			initialObjects: { empMap: SharedMap, deptData: SharedMap },
 		};
@@ -58,7 +56,6 @@ export class DashboardComponent implements OnInit {
 			result = await client.createContainer(containerSchema);
 			this.container = result.container;
 			const id = await this.container.attach();
-			console.log(id);
 			location.hash = id;
 		} else {
 			result = await client.getContainer(containerId, containerSchema);
@@ -72,17 +69,14 @@ export class DashboardComponent implements OnInit {
 	}
 
 	async syncData() {
-    console.log("syncData method");
 		// Only sync if the Fluid SharedMap object is defined.
 		if (this.sharedMap) {
       if(this.empDataList != null && this.empDataList != undefined){
         this.sharedMap?.set("EmpTable", this.empDataList);
-        console.log(this.empDataList);
       }
 			
 			this.getEmpUpdate = () => {
 				this.empDataList = this.sharedMap?.get("EmpTable");
-        console.log(this.empDataList);
 			}
 			this.getEmpUpdate();
 
@@ -92,12 +86,10 @@ export class DashboardComponent implements OnInit {
     if (this.deptSharedMap) {
       if(this.departments != null && this.departments != undefined){
         this.deptSharedMap?.set("DeptTable", this.departments);
-        console.log(this.departments);
       }
 			
 			this.getDeptUpdate = () => {
 				this.departments = this.deptSharedMap?.get("DeptTable");
-        console.log(this.departments);
 			}
 			this.getDeptUpdate();
 
@@ -111,10 +103,8 @@ export class DashboardComponent implements OnInit {
 	}
 
 	async getEmpData() {
-    console.log("getEmpData method");
 		this.empService.getEmployees()
 		.subscribe((data) => {
-			console.log(data);
 			this.empDataList = data;
 		});
   }
@@ -141,10 +131,8 @@ export class DashboardComponent implements OnInit {
 	// }
 
 	async getDepartments() {
-    console.log("getDepartments method");
 		this.empService.getDepartments()
 		.subscribe((data) => {
-			console.log(data);
 			this.departments = data;
       //this.deptSharedMap?.set("DeptTable", this.departments);
 		});
